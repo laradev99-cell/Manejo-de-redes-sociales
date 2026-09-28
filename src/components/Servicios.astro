@@ -1,0 +1,287 @@
+---
+import { whatsapp } from '../data/site.js';
+
+// Dos secciones distintas y separadas: qué hacemos con tus redes, y qué
+// se le puede sumar aparte. Antes convivían en la misma tarjeta y no se
+// entendía dónde terminaba el servicio y dónde empezaba el agregado.
+const arranque = {
+  titulo: 'Análisis y estrategia',
+  texto:
+    'Entendemos tu marca, tu público y tu competencia. De ahí sale el plan que guía todo el trabajo.',
+};
+
+const trabajo = [
+  'Ideas y plan de contenido',
+  'Diseño y edición de cada pieza',
+  'Textos escritos para vender',
+  'Publicamos por vos',
+  'Te decimos qué grabar',
+];
+
+// Los que llevan `enlace` se resuelven en la página de webs: así el
+// sitio deja de repetir la sección entera de páginas web.
+const extras = [
+  {
+    titulo: 'El vendedor que nunca duerme',
+    texto:
+      'Contesta precios, stock y envíos por WhatsApp las 24 horas, con tus palabras.',
+    enlace: '/vendedor',
+  },
+  {
+    titulo: 'Publicidad en Meta Ads',
+    texto:
+      'Armamos y gestionamos tus campañas. La pauta la pagás vos directo a Meta.',
+  },
+  {
+    titulo: 'Páginas web',
+    texto:
+      'Tiendas online, landings y desarrollo a medida, con programadores propios.',
+    enlace: '/webs',
+  },
+];
+---
+
+<section class="seccion clara servicios">
+  <div class="contenedor">
+    <div class="encabezado">
+      <p class="etiqueta" data-revelar>Servicios</p>
+      <h2 class="titulo" data-revelar style="--retraso: 80ms">Qué hacemos</h2>
+    </div>
+
+    <article class="principal" data-revelar>
+      <div class="principal-intro">
+        <h3 class="principal-titulo">Manejo de redes sociales</h3>
+        <p class="cuerpo">
+          Nos hacemos cargo de tus redes: qué se dice, cómo se ve y cuándo
+          sale.
+        </p>
+      </div>
+
+      <div class="principal-detalle">
+        <div class="grupo">
+          <p class="grupo-titulo">Arranca con</p>
+          <p class="grupo-destacado">{arranque.titulo}</p>
+          <p class="grupo-texto">{arranque.texto}</p>
+        </div>
+
+        <div class="grupo">
+          <p class="grupo-titulo">Y después</p>
+          <ul class="items">
+            {trabajo.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+
+      <div class="principal-pie">
+        <a
+          class="boton boton-acento"
+          href={whatsapp('Hola Lara, quiero saber más sobre el manejo de redes.')}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Consultar
+          <svg class="flecha" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8h11m0 0-4.2-4.2M13 8l-4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Sección propia: son agregados, no parte del servicio de redes -->
+<section class="seccion lavanda sumables">
+  <div class="contenedor">
+    <div class="encabezado">
+      <p class="etiqueta" data-revelar>Aparte</p>
+      <h2 class="titulo" data-revelar style="--retraso: 80ms">
+        Se le puede sumar
+      </h2>
+    </div>
+
+    <div class="sumables-grilla">
+      {
+        extras.map((e, i) => (
+          <div class="sumable" data-revelar style={`--retraso: ${i * 90}ms`}>
+            <h3>{e.titulo}</h3>
+            <p class="cuerpo">{e.texto}</p>
+            {e.enlace && (
+              <a class="sumable-enlace" href={e.enlace}>
+                Ver precios
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M2 8h11m0 0-4.2-4.2M13 8l-4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .encabezado {
+    margin-bottom: clamp(2.5rem, 6vw, 3.5rem);
+  }
+
+  .encabezado .etiqueta {
+    margin-bottom: 1.2rem;
+  }
+
+  /* ── El servicio central ── */
+  .principal {
+    background: var(--tinta);
+    color: var(--blanco);
+    border-radius: var(--radio);
+    padding: clamp(2rem, 5vw, 3.5rem);
+    display: grid;
+    gap: 3.75rem;
+  }
+
+  .principal-titulo {
+    font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin-bottom: 2.5rem;
+    text-wrap: balance;
+  }
+
+  .principal .cuerpo {
+    color: var(--texto-claro);
+    max-width: 32ch;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .principal-pie {
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  /* Dentro de la tarjeta oscura el botón vuelve al violeta claro */
+  .principal .boton-acento {
+    background: #a87cff;
+    color: var(--tinta);
+  }
+
+  .principal .boton-acento:hover {
+    background: #bd9bff;
+  }
+
+  .principal-detalle {
+    display: grid;
+    gap: 3.125rem;
+  }
+
+  .grupo {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .grupo-titulo {
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(217, 199, 255, 0.72);
+    margin-bottom: 1.4rem;
+  }
+
+  .grupo-destacado {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--blanco);
+    margin-bottom: 0.8rem;
+  }
+
+  .grupo-texto {
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--texto-claro);
+    max-width: 46ch;
+  }
+
+  .items {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+    gap: 0.9rem 2.5rem;
+  }
+
+  .items li {
+    position: relative;
+    padding-left: 1.6rem;
+    font-weight: 300;
+    font-size: 1rem;
+    color: var(--texto-claro);
+    line-height: 1.5;
+  }
+
+  .items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.68em;
+    width: 10px;
+    height: 1.5px;
+    background: #a87cff;
+  }
+
+  /* ── Los agregados ── */
+  .sumables-grilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: clamp(2rem, 4.5vw, 3rem);
+  }
+
+  .sumable {
+    padding-top: clamp(1.2rem, 3vw, 1.6rem);
+    border-top: 2px solid var(--violeta-900);
+  }
+
+  .sumable h3 {
+    font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--violeta-900);
+    margin-bottom: 0.8rem;
+    text-wrap: balance;
+  }
+
+  .sumable .cuerpo {
+    font-size: 0.95rem;
+  }
+
+  .sumable-enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--violeta-600);
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--violeta-200);
+    padding-bottom: 0.1rem;
+    transition: border-color var(--transicion);
+  }
+
+  .sumable-enlace:hover {
+    border-bottom-color: var(--violeta-600);
+  }
+
+  @media (min-width: 880px) {
+    .principal {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      align-items: start;
+    }
+
+    .principal-pie {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

@@ -1,0 +1,699 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Pie from '../components/Pie.astro';
+import { precios } from '../data/precios.js';
+import { whatsapp, mensajes } from '../data/site.js';
+
+const pesos = (n) =>
+  new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(n);
+
+// Desarrollo a medida ya no vive acá: está en /webs, adonde lleva el
+// botón de la sección de páginas web.
+const { analisisEstrategia, manejoRedes, tiendaOnline, respuestasAutomaticas, condiciones, loQueNecesitamos } = precios;
+---
+
+<Layout
+  titulo="Tu propuesta"
+  descripcion="Propuesta de trabajo de Naimid.Agency"
+  noindex={true}
+>
+  <!-- ─── PORTADA ─── -->
+  <header class="portada oscura grano" id="contenido">
+    <div class="orbe orbe-portada"></div>
+    <div class="contenedor interior">
+      <p class="etiqueta" data-revelar>Naimid.Agency</p>
+      <h1 class="display" data-revelar style="--retraso: 90ms">
+        Propuesta para crecer en redes
+      </h1>
+      <p class="bajada" data-revelar style="--retraso: 180ms">
+        Nosotros pensamos, grabamos, editamos y publicamos. Vos seguís con tu
+        negocio.
+      </p>
+    </div>
+  </header>
+
+  <!-- ─── PASO 1 ─── -->
+  <section class="seccion clara">
+    <div class="contenedor">
+      <p class="etiqueta" data-revelar>Paso 01</p>
+      <h2 class="titulo" data-revelar style="--retraso: 70ms">
+        Análisis y estrategia
+      </h2>
+      <p class="cuerpo bajo-titulo" data-revelar style="--retraso: 120ms">
+        {analisisEstrategia.bajada}
+      </p>
+
+      <div class="dos-columnas">
+        <ul class="lista-check" data-revelar>
+          {analisisEstrategia.incluye.map((item) => <li>{item}</li>)}
+        </ul>
+
+        <aside class="caja-precio" data-revelar style="--retraso: 120ms">
+          <p class="precio">{pesos(analisisEstrategia.precio)}</p>
+          <p class="nota">{analisisEstrategia.frecuencia}</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PASO 2 ─── -->
+  <section class="seccion lavanda">
+    <div class="contenedor">
+      <p class="etiqueta" data-revelar>Paso 02</p>
+      <h2 class="titulo" data-revelar style="--retraso: 70ms">
+        Manejo de redes
+      </h2>
+      <p class="cuerpo bajo-titulo" data-revelar style="--retraso: 120ms">
+        {manejoRedes.bajada}
+      </p>
+
+      <div class="planes">
+        {
+          manejoRedes.planes.map((plan, i) => (
+            <article
+              class:list={['plan', { destacado: plan.destacado }]}
+              data-revelar
+              style={`--retraso: ${i * 90}ms`}
+            >
+              {plan.destacado && <p class="plan-sello">El más elegido</p>}
+
+              <p class="plan-nombre">{plan.nombre}</p>
+              <p class="plan-promesa">{plan.promesa}</p>
+
+              <div class="plan-precio-bloque">
+                <p class="plan-precio">{pesos(plan.precio)}</p>
+                <p class="plan-periodo">por mes</p>
+              </div>
+
+              <ul class="plan-items">
+                {plan.incluye.map((item) => <li set:html={item} />)}
+              </ul>
+
+              <div class="plan-pie">
+                {plan.condicion && <p class="plan-condicion">{plan.condicion}</p>}
+                <p class="plan-volumen">{plan.volumen}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONDICIONES ─── -->
+  <section class="seccion clara">
+    <div class="contenedor">
+      <p class="etiqueta" data-revelar>Condiciones</p>
+      <h2 class="titulo titulo-suelto" data-revelar style="--retraso: 70ms">Cómo funciona</h2>
+
+      <dl class="condiciones">
+        {
+          [
+            ['Pago', condiciones.pago],
+            ['Duración', condiciones.duracion],
+            ['Ajuste', condiciones.ajuste],
+            ['Revisiones', condiciones.revisiones],
+          ].map(([titulo, texto], i) => (
+            <div class="condicion" data-revelar style={`--retraso: ${i * 80}ms`}>
+              <dt>{titulo}</dt>
+              <dd class="cuerpo">{texto}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- ─── LO QUE NECESITAMOS ─── -->
+  <section class="seccion lavanda">
+    <div class="contenedor">
+      <p class="etiqueta" data-revelar>De tu lado</p>
+      <h2 class="titulo" data-revelar style="--retraso: 70ms">
+        Lo que necesitamos de vos
+      </h2>
+      <p class="horas" data-revelar style="--retraso: 120ms">
+        Unas <span class="acento">2 horas</span> por mes.
+      </p>
+
+      <ul class="lista-check" data-revelar>
+        {loQueNecesitamos.items.map((item) => <li>{item}</li>)}
+      </ul>
+
+      <p class="pacto" data-revelar>{loQueNecesitamos.nota}</p>
+    </div>
+  </section>
+
+  <!-- ─── EL VENDEDOR QUE NUNCA DUERME ───
+       Igual que las webs: acá solo se abre la puerta, el detalle y el
+       precio viven en /vendedor. -->
+  <section class="seccion clara">
+    <div class="contenedor">
+      <p class="etiqueta" data-revelar>Si querés que te contesten por vos</p>
+      <h2 class="titulo" data-revelar style="--retraso: 70ms">
+        {respuestasAutomaticas.nombre}
+      </h2>
+      <p class="cuerpo bajo-titulo" data-revelar style="--retraso: 120ms">
+        Un asistente que conoce tu negocio y contesta precios, stock y envíos
+        por WhatsApp las 24 horas. En Instagram deja respuestas automáticas que
+        llevan la charla a WhatsApp.
+      </p>
+
+      <div class="ver-mas ver-mas-suelto" data-revelar>
+        <a class="boton boton-linea-oscura" href="/vendedor">
+          Ver cómo funciona y cuánto sale
+          <svg class="flecha" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8h11m0 0-4.2-4.2M13 8l-4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PÁGINAS WEB ───
+       Va al final y sin lista de precios: acá solo se abre la puerta,
+       el catálogo entero vive en /webs. -->
+  <section class="seccion lavanda">
+    <div class="contenedor">
+      <p class="etiqueta" data-revelar>Si además necesitás web</p>
+      <h2 class="titulo" data-revelar style="--retraso: 70ms">
+        {tiendaOnline.nombre}
+      </h2>
+      <p class="cuerpo bajo-titulo" data-revelar style="--retraso: 120ms">
+        Tiendas online, landings, catálogos con pedidos por WhatsApp y
+        desarrollo a medida. Está todo con precios y plazos en su propia
+        página.
+      </p>
+
+      <div class="ver-mas ver-mas-suelto" data-revelar>
+        <a class="boton boton-linea-oscura" href="/webs">
+          Ver todos los servicios de páginas web
+          <svg class="flecha" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 8h11m0 0-4.2-4.2M13 8l-4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CIERRE ─── -->
+  <section class="seccion oscura grano cierre">
+    <div class="orbe orbe-cierre"></div>
+    <div class="contenedor interior">
+      <h2 class="titulo" data-revelar>¿Arrancamos?</h2>
+      <p class="cuerpo" data-revelar style="--retraso: 90ms">
+        Elegí el plan que te cierre y coordinamos la primera jornada de
+        grabación.
+      </p>
+      <a
+        class="boton boton-acento"
+        href={whatsapp(mensajes.arrancar)}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-revelar
+        style="--retraso: 160ms"
+      >
+        Quiero arrancar
+        <svg class="flecha" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 8h11m0 0-4.2-4.2M13 8l-4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <p class="duda" data-revelar style="--retraso: 220ms">
+        ¿Alguna duda antes?{' '}
+        <a
+          class="enlace"
+          href={whatsapp(mensajes.propuesta)}
+          target="_blank"
+          rel="noopener noreferrer">Escribime.</a
+        >
+      </p>
+    </div>
+  </section>
+
+  <Pie />
+</Layout>
+
+<style>
+  /* ── Portada ── */
+  .portada {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(6rem, 18vw, 11rem) clamp(4rem, 12vw, 7rem);
+  }
+
+  .orbe-portada {
+    width: min(60vw, 640px);
+    aspect-ratio: 1;
+    top: -25%;
+    right: -15%;
+    background: radial-gradient(circle, #6b2fd6 0%, transparent 68%);
+    opacity: 0.8;
+  }
+
+  .interior {
+    position: relative;
+    z-index: 1;
+  }
+
+  .portada .etiqueta {
+    color: var(--violeta-400);
+    margin-bottom: clamp(1.2rem, 3vw, 1.8rem);
+  }
+
+  .portada h1 {
+    margin-bottom: clamp(1.2rem, 3vw, 1.6rem);
+  }
+
+  /* ── Encabezados de sección ── */
+  .etiqueta {
+    margin-bottom: 1.1rem;
+  }
+
+  .bajo-titulo {
+    margin-top: 1rem;
+    margin-bottom: clamp(2.5rem, 6vw, 3.5rem);
+    max-width: 46ch;
+  }
+
+  /* Título sin bajada: necesita su propio aire antes del contenido */
+  .titulo-suelto {
+    margin-bottom: clamp(2.5rem, 6vw, 3.5rem);
+  }
+
+  /* ── Listas con check ── */
+  .lista-check {
+    list-style: none;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .lista-check li {
+    position: relative;
+    padding-left: 1.9rem;
+    font-weight: 300;
+    color: var(--texto-medio);
+    line-height: 1.6;
+  }
+
+  .lista-check li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--acento);
+  }
+
+  /* ── Caja de precio ── */
+  .dos-columnas {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4rem);
+    align-items: start;
+  }
+
+  @media (min-width: 860px) {
+    .dos-columnas {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    }
+  }
+
+  /* Violeta claro con borde, no el violeta-900 que leía como negro.
+     El precio se destaca por tamaño, no por invertir el fondo. */
+  .caja-precio {
+    background: var(--violeta-100);
+    border: 1px solid var(--violeta-200);
+    border-radius: var(--radio);
+    padding: clamp(1.8rem, 4vw, 2.4rem);
+  }
+
+  /* Sobre lavanda el violeta claro desaparece: ahí la caja va blanca */
+  .lavanda .caja-precio {
+    background: var(--blanco);
+  }
+
+  .caja-precio hr {
+    border: none;
+    border-top: 1px solid var(--violeta-200);
+    margin-block: 1.4rem;
+  }
+
+  .precio {
+    font-size: clamp(2rem, 5.5vw, 2.9rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    color: var(--violeta-900);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mini-etiqueta {
+    font-size: var(--micro);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--violeta-600);
+    margin-bottom: 0.5rem;
+  }
+
+  .precio-tachado {
+    margin-left: 0.6rem;
+    font-size: 0.45em;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--texto-medio);
+    text-decoration: line-through;
+    text-decoration-color: var(--violeta-200);
+  }
+
+  .nota {
+    margin-top: 0.8rem;
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--texto-medio);
+  }
+
+  /* ── Planes ── */
+  /* Con cuatro planes las columnas se angostan: bajamos el mínimo para
+     que entren en una fila en escritorio y de a dos en tablet */
+  .planes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 215px), 1fr));
+    gap: clamp(0.85rem, 1.6vw, 1rem);
+  }
+
+  .plan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--blanco);
+    border: 1px solid var(--violeta-200);
+    border-radius: var(--radio);
+    padding: clamp(1.5rem, 3vw, 1.9rem);
+    transition: transform var(--transicion), box-shadow var(--transicion);
+  }
+
+  .plan:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 48px -30px rgba(45, 10, 107, 0.5);
+  }
+
+  /* El del medio lleva borde propio: es el que queremos que se elija */
+  .plan.destacado {
+    border: 2px solid var(--violeta-600);
+    box-shadow: 0 18px 40px -28px rgba(45, 10, 107, 0.45);
+  }
+
+  .plan-sello {
+    position: absolute;
+    top: 0;
+    left: clamp(1.6rem, 4vw, 2.2rem);
+    transform: translateY(-50%);
+    background: var(--violeta-600);
+    color: var(--blanco);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.7rem;
+    border-radius: 100px;
+  }
+
+  .plan-nombre {
+    font-size: var(--micro);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--violeta-600);
+    margin-bottom: 0.9rem;
+  }
+
+  /* La promesa manda: es lo primero que se lee del plan */
+  .plan-promesa {
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    color: var(--violeta-900);
+    text-wrap: balance;
+    margin-bottom: 1.5rem;
+  }
+
+  .plan-precio-bloque {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--violeta-200);
+  }
+
+  .plan-items {
+    list-style: none;
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .plan-items li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--texto-medio);
+  }
+
+  .plan-items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid var(--acento);
+  }
+
+  /* Contra el peso 300 de la línea, el número de jornadas salta a la
+     vista: es lo que más cambia de un plan a otro. */
+  .plan-items li strong {
+    font-weight: 600;
+    color: var(--violeta-900);
+  }
+
+  /* El pie junta las dos condiciones del plan: cuántos lugares hay y
+     cuánto sale. Informan, no venden. */
+  .plan-pie {
+    margin-top: auto;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--violeta-200);
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .plan-condicion {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--acento);
+  }
+
+  .plan-volumen {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--texto-medio);
+  }
+
+  .plan-precio {
+    font-size: clamp(1.6rem, 4vw, 2.05rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--violeta-900);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .plan-periodo {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--texto-medio);
+  }
+
+  /* ── Filas de precios ── */
+  .filas {
+    border-top: 1px solid var(--violeta-200);
+  }
+
+  .fila {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem 1.5rem;
+    padding-block: clamp(1.1rem, 3vw, 1.5rem);
+    border-bottom: 1px solid var(--violeta-200);
+  }
+
+  .fila dt {
+    font-weight: 400;
+    color: var(--violeta-900);
+  }
+
+  .fila dd {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--violeta-600);
+    font-size: 1.05rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .aclaracion {
+    margin-top: 1.4rem;
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--texto-medio);
+    max-width: 60ch;
+  }
+
+  .ver-mas {
+    margin-top: clamp(2.5rem, 6vw, 3.5rem);
+    padding-top: clamp(2rem, 5vw, 2.6rem);
+    border-top: 1px solid var(--violeta-200);
+  }
+
+  /* Sin lista arriba no hay nada de qué separarse */
+  .ver-mas-suelto {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .ver-mas-intro {
+    font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--violeta-900);
+    margin-bottom: 1.3rem;
+  }
+
+  .boton-linea-oscura {
+    background: transparent;
+    color: var(--violeta-900);
+    border: 1.5px solid var(--violeta-900);
+  }
+
+  .boton-linea-oscura:hover {
+    background: var(--violeta-900);
+    color: var(--blanco);
+  }
+
+  .ver-mas-nota {
+    margin-top: 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--texto-medio);
+    max-width: 52ch;
+  }
+
+  .parrafo {
+    margin-bottom: 1.2rem;
+  }
+
+  /* ── Condiciones ──
+     Lista de definiciones con reglas finas: es un documento
+     contractual, se lee como tal. */
+  .condiciones {
+    margin-top: clamp(2rem, 5vw, 3rem);
+    border-top: 2px solid var(--violeta-900);
+  }
+
+  .condicion {
+    display: grid;
+    gap: 0.5rem 3rem;
+    padding-block: clamp(1.3rem, 3.5vw, 1.8rem);
+    border-bottom: 1px solid var(--violeta-200);
+  }
+
+  .condicion dt {
+    font-size: var(--micro);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--violeta-600);
+    padding-top: 0.35em;
+  }
+
+  .condicion dd {
+    max-width: 58ch;
+  }
+
+  @media (min-width: 760px) {
+    .condicion {
+      grid-template-columns: minmax(0, 0.28fr) minmax(0, 1fr);
+    }
+  }
+
+  /* ── Lo que necesitamos ── */
+  .horas {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 200;
+    letter-spacing: -0.025em;
+    color: var(--violeta-900);
+    margin-block: 1.2rem clamp(2rem, 5vw, 2.8rem);
+  }
+
+  .horas .acento {
+    font-weight: 700;
+  }
+
+  .pacto {
+    margin-top: clamp(2rem, 5vw, 2.8rem);
+    padding: clamp(1.4rem, 4vw, 1.9rem);
+    background: var(--violeta-100);
+    border-radius: var(--radio);
+    font-weight: 400;
+    color: var(--violeta-900);
+    max-width: 52ch;
+  }
+
+  /* ── Cierre ── */
+  .cierre {
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--tinta) 0%, #240a54 100%);
+  }
+
+  .orbe-cierre {
+    width: min(70vw, 740px);
+    aspect-ratio: 1;
+    bottom: -35%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, #a87cff 0%, transparent 65%);
+    opacity: 0.3;
+  }
+
+  .cierre .interior {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cierre .cuerpo {
+    margin-bottom: 2rem;
+  }
+
+  .duda {
+    margin-top: 1.6rem;
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: var(--texto-claro);
+  }
+
+  .duda .enlace {
+    color: var(--blanco);
+    font-weight: 500;
+  }
+</style>

@@ -1,0 +1,80 @@
+---
+// Poppins autoalojada: sin pedido a Google Fonts.
+// Menos milisegundos y menos datos móviles.
+// Solo el subconjunto latino: el paquete completo trae alfabetos
+// que este sitio nunca usa y multiplica el peso por diez.
+import '@fontsource/poppins/latin-200.css';
+import '@fontsource/poppins/latin-300.css';
+import '@fontsource/poppins/latin-500.css';
+import '@fontsource/poppins/latin-600.css';
+import '@fontsource/poppins/latin-800.css';
+import '../styles/global.css';
+
+import { marca } from '../data/site.js';
+
+interface Props {
+  titulo: string;
+  descripcion?: string;
+  noindex?: boolean;
+}
+
+const {
+  titulo,
+  descripcion = marca.descripcion,
+  noindex = false,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={descripcion} />
+    <meta name="theme-color" content="#12042E" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <title>{titulo} | {marca.nombre}</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${titulo} | ${marca.nombre}`} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:locale" content="es_AR" />
+  </head>
+
+  <body>
+    <a class="salto-contenido" href="#contenido">Saltar al contenido</a>
+    <slot />
+
+    <script>
+      // Aparición escalonada al entrar en pantalla.
+      // Si la persona pidió menos movimiento, no se hace nada:
+      // el CSS ya deja todo visible.
+      const menosMovimiento = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+
+      if (!menosMovimiento && 'IntersectionObserver' in window) {
+        const observador = new IntersectionObserver(
+          (entradas) => {
+            entradas.forEach((entrada) => {
+              if (entrada.isIntersecting) {
+                entrada.target.classList.add('visible');
+                observador.unobserve(entrada.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+        );
+
+        document
+          .querySelectorAll('[data-revelar]')
+          .forEach((el) => observador.observe(el));
+      } else {
+        document
+          .querySelectorAll('[data-revelar]')
+          .forEach((el) => el.classList.add('visible'));
+      }
+    </script>
+  </body>
+</html>
